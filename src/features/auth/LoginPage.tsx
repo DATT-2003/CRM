@@ -1,28 +1,49 @@
+import { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
-import { login } from "./api";
-import type { LoginFormValues } from "./types"
+import { useNavigate } from "react-router-dom";
+import authApi from "./authApi";
+import type { LoginFormValues, LoginResponse } from "./authTypes";
 import { AxiosError } from "axios";
+import { setAuth } from "../../utils/auth"; // ✅ dùng utils để lưu token
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const redirectByRole = (role: LoginResponse["role"]) => {
+    switch (role) {
+      case "ADMIN":
+      case "MANAGER":
+        return "/dashboard";
+      case "SALES":
+        return "/customers";
+      default:
+        return "/";
+    }
+  };
+
   const onFinish = async (values: LoginFormValues) => {
+    setLoading(true);
     try {
-      const data = await login(values);
-      localStorage.setItem("token", data.token);
+      const data = await authApi.login(values);
+      setAuth(data);
       message.success("Đăng nhập thành công");
-      window.location.href = "/";
+      navigate(redirectByRole(data.role), { replace: true }); // ✅ dùng navigate
     } catch (error) {
-      const err = error as AxiosError;
+      const err = error as AxiosError<{ message?: string }>;
       if (err.response?.status === 401) {
-        message.error("Sai email hoặc mật khẩu");
+        message.error(err.response.data?.message || "Sai email hoặc mật khẩu");
       } else {
         message.error("Lỗi hệ thống, vui lòng thử lại");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ display: "grid", placeItems: "center", height: "100vh" }}>
-      <Card style={{ width: 380 }}>
+    <div style={{ display: "grid", placeItems: "center", height: "100vh", padding: 16 }}>
+      <Card style={{ maxWidth: 400, width: "100%" }}>
         <h2 style={{ textAlign: "center", marginBottom: 20 }}>
           CRM Mini - Đăng nhập
         </h2>
@@ -31,11 +52,11 @@ export default function LoginPage() {
             name="email"
             label="Email"
             rules={[
-                { required: true, message: "Vui lòng nhập email" },
-              { type: "email" },
+              { required: true, message: "Vui lòng nhập email" },
+              { type: "email", message: "Email không hợp lệ" },
             ]}
           >
-            <Input />
+            <Input placeholder="Nhập email" />
           </Form.Item>
 
           <Form.Item
@@ -43,11 +64,11 @@ export default function LoginPage() {
             label="Mật khẩu"
             rules={[{ required: true, message: "Vui lòng nhập mật khẩu" }]}
           >
-            <Input.Password />
+            <Input.Password placeholder="Nhập mật khẩu" />
           </Form.Item>
 
           <Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block loading={loading}>
               Đăng nhập
             </Button>
           </Form.Item>

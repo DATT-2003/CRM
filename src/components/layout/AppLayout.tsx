@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Layout, Menu } from "antd";
 import {
   DashboardOutlined,
   TeamOutlined,
   UserOutlined,
   LogoutOutlined,
+  ContactsOutlined,
+  ProfileOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet, useNavigate } from "react-router-dom";
-import { getAuth } from "../../utils/auth";
+import { getAuth, clearAuth } from "../../utils/auth";
 
 const { Header, Sider, Content } = Layout;
 
@@ -17,7 +19,7 @@ export default function AppLayout() {
   const user = getAuth();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    clearAuth();
     navigate("/login");
   };
 
@@ -56,6 +58,16 @@ export default function AppLayout() {
               <Link to="/customers">Customers</Link>
             </Menu.Item>
           )}
+
+          {/* ✅ Thêm Contacts */}
+          <Menu.Item key="contacts" icon={<ContactsOutlined />}>
+            <Link to="/contacts">Contacts</Link>
+          </Menu.Item>
+
+          {/* ✅ Thêm Detail */}
+          <Menu.Item key="detail" icon={<ProfileOutlined />}>
+            <Link to="/detail">Detail</Link>
+          </Menu.Item>
 
           <Menu.Item
             key="logout"

@@ -3,7 +3,7 @@
 // import { getAuth } from "../../utils/auth";
 
 // interface Props {
-//   children: React.ReactNode; // 👈 thay JSX.Element bằng React.ReactNode
+//   children: React.ReactNode; //
 //   allow?: ("ADMIN" | "MANAGER" | "SALES")[];
 // }
 
@@ -28,6 +28,5 @@ interface Props {
 }
 
 export default function ProtectedRoute({ children }: Props) {
-  // 🔧 DEV mode: luôn cho phép vào, bỏ qua kiểm tra login/role
   return <>{children}</>;
 }
