@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Row, Col, Card, Typography, Spin, List, Tag, Tabs } from "antd";
 import { Column } from "@ant-design/charts"; // 👈 đổi Bar -> Column
-import dashboardApi from "./dashboardApi";
-import type { DashboardData } from "./dashboardTypes";
+import dashboardApi from "../../features/dashboard/dashboardApi";
+import type { DashboardData } from "../../features/dashboard/dashboardTypes";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;

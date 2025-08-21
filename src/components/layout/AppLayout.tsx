@@ -53,12 +53,14 @@ export default function AppLayout() {
           )}
 
           {/* Manager & Sales thấy Customers */}
-          {(user?.role === "MANAGER" || user?.role === "SALES") && (
+          {/* {(user?.role === "MANAGER" || user?.role === "SALES") && (
             <Menu.Item key="customers" icon={<UserOutlined />}>
               <Link to="/customers">Customers</Link>
             </Menu.Item>
-          )}
-
+          )} */}
+            <Menu.Item key="customers" icon={<UserOutlined />}>
+              <Link to="/customers">Customers</Link>
+            </Menu.Item>
           {/* ✅ Thêm Contacts */}
           <Menu.Item key="contacts" icon={<ContactsOutlined />}>
             <Link to="/contacts">Contacts</Link>

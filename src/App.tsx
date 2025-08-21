@@ -1,13 +1,13 @@
 
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import LoginPage from "./features/auth/LoginPage";
-import ProtectedRoute from "./features/auth/ProtectedRoute";
+import LoginPage from "./components/auth/LoginPage";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 import AppLayout from "./components/layout/AppLayout";
-import DashboardPage from "./features/dashboard/DashboardPage";
-import EmployeesList from "./features/employees/EmployeesList";
-import CustomersList from "./features/customers/CustomersList";
+import DashboardPage from "./components/dashboard/DashboardPage";
+import EmployeesList from "./components/employees/EmployeesList";
+import CustomersList from "./features/customers/components/customersPage";
 
 export default function App() {
   return (
