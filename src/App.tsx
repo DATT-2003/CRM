@@ -1,13 +1,15 @@
 
 import { Routes, Route, Navigate } from "react-router-dom";
 
-import LoginPage from "./components/auth/LoginPage";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
-
+import LoginPage from "./features/auth/components/LoginPage";
+import ProtectedRoute from "./features/auth/components/ProtectedRoute";
 import AppLayout from "./components/layout/AppLayout";
-import DashboardPage from "./components/dashboard/DashboardPage";
-import EmployeesList from "./components/employees/EmployeesList";
+import DashboardPage from "./features/dashboard/components/DashboardPage";
+import EmployeesList from "./features/employees/components/EmployeesPage";
 import CustomersList from "./features/customers/components/customersPage";
+import OpportunityDetail from "./features/opportunities/components/OpportunityDetail";
+import OpportunitiesPage from "./features/opportunities/components/OpportunitiesPage";
+import CustomerDetail from "./features/customers/components/customerDetail";
 
 export default function App() {
   return (
@@ -35,6 +37,30 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+          <Route
+            path="opportunities"
+            element={
+              <ProtectedRoute allow={["MANAGER", "SALES"]}>
+                <OpportunitiesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="opportunities/:id"
+            element={
+              <ProtectedRoute allow={["MANAGER", "SALES"]}>
+                <OpportunityDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="customers/:id"
+            element={
+              <ProtectedRoute allow={["MANAGER", "SALES"]}>
+                <CustomerDetail />
+              </ProtectedRoute>
+            }
+          />
 
         <Route
           path="employees"

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { Form, Input, Button, Card, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import authApi from "../../features/auth/authApi";
-import type { LoginFormValues, LoginResponse } from "../../features/auth/authTypes";
+import authApi from "../authApi";
+import type { LoginFormValues, LoginResponse } from "../authTypes";
 import { AxiosError } from "axios";
-import { setAuth } from "../../utils/auth"; // ✅ dùng utils để lưu token
+import { setAuth } from "../../../utils/auth"; // ✅ dùng utils để lưu token
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);

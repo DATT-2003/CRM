@@ -5,8 +5,7 @@ import {
   TeamOutlined,
   UserOutlined,
   LogoutOutlined,
-  ContactsOutlined,
-  ProfileOutlined,
+  FundProjectionScreenOutlined,
 } from "@ant-design/icons";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { getAuth, clearAuth } from "../../utils/auth";
@@ -23,10 +22,25 @@ export default function AppLayout() {
     navigate("/login");
   };
 
+  const siderWidth = collapsed ? 80 : 200;
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {/* Sidebar */}
-      <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
+      {/* Sidebar cố định */}
+      <Sider
+        collapsible
+        collapsed={collapsed}
+        onCollapse={setCollapsed}
+        width={200}
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          height: "100vh",
+          zIndex: 100,
+        }}
+      >
         <div
           style={{
             height: 32,
@@ -51,24 +65,15 @@ export default function AppLayout() {
               <Link to="/employees">Employees</Link>
             </Menu.Item>
           )}
-
-          {/* Manager & Sales thấy Customers */}
-          {/* {(user?.role === "MANAGER" || user?.role === "SALES") && (
-            <Menu.Item key="customers" icon={<UserOutlined />}>
-              <Link to="/customers">Customers</Link>
+          <Menu.Item key="employees" icon={<UserOutlined />}>
+              <Link to="/employees">Employees</Link>
             </Menu.Item>
-          )} */}
-            <Menu.Item key="customers" icon={<UserOutlined />}>
-              <Link to="/customers">Customers</Link>
-            </Menu.Item>
-          {/* ✅ Thêm Contacts */}
-          <Menu.Item key="contacts" icon={<ContactsOutlined />}>
-            <Link to="/contacts">Contacts</Link>
+          <Menu.Item key="opportunities" icon={<FundProjectionScreenOutlined />}>
+            <Link to="/opportunities">Opportunities</Link>
           </Menu.Item>
 
-          {/* ✅ Thêm Detail */}
-          <Menu.Item key="detail" icon={<ProfileOutlined />}>
-            <Link to="/detail">Detail</Link>
+          <Menu.Item key="customers" icon={<UserOutlined />}>
+            <Link to="/customers">Customers</Link>
           </Menu.Item>
 
           <Menu.Item
@@ -81,15 +86,22 @@ export default function AppLayout() {
         </Menu>
       </Sider>
 
-      {/* Main layout */}
-      <Layout>
+      {/* Main layout dịch sang phải theo sidebar */}
+      <Layout style={{ marginLeft: siderWidth }}>
+        {/* Header cố định */}
         <Header
           style={{
-            padding: "0 16px",
+            position: "fixed",
+            top: 0,
+            left: siderWidth,
+            right: 0,
+            zIndex: 90,
             background: "#fff",
+            padding: "0 16px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
+            height: 64,
           }}
         >
           <h3>CRM Mini</h3>
@@ -98,10 +110,17 @@ export default function AppLayout() {
           </div>
         </Header>
 
-        <Content style={{ margin: "16px" }}>
-          <div style={{ padding: 24, minHeight: 360, background: "#fff" }}>
-            <Outlet />
-          </div>
+        {/* Content cuộn */}
+        <Content
+          style={{
+            margin: "80px 16px 16px", // chừa chỗ cho header
+            padding: 24,
+            minHeight: "calc(100vh - 96px)",
+            background: "#fff",
+            overflow: "auto",
+          }}
+        >
+          <Outlet />
         </Content>
       </Layout>
     </Layout>
